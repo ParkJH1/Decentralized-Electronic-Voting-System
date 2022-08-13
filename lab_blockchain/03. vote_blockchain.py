@@ -8,8 +8,8 @@ block1 = {
         'options': ['투표 항목1', '투표 항목2', '투표 항목3']
     }
 }
+
 chain.append(block1)
-print(chain)
 
 block2 = {
     'type': 'vote',
@@ -18,5 +18,6 @@ block2 = {
         'vote': '투표 항목1'
     }
 }
+
 chain.append(block2)
 print(chain)
