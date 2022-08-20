@@ -10,6 +10,7 @@ block1 = {
 }
 
 chain.append(block1)
+print(chain)
 
 block2 = {
     'type': 'vote',
