@@ -64,7 +64,7 @@ if __name__ == '__main__':
                 'data': {
                     'port': port
                 }
-            }))
+            }).encode())
             nodes.append((s, f'127.0.0.1:{p}'))
         except:
             continue
