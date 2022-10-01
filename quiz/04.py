@@ -96,6 +96,54 @@ class Tab1(QWidget):
         option3_text = self.vote_list[self.current_vote_id]['options'][2]
         self.option3_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option3_text])
 
+    def vote1(self):
+        block = {
+            'type': 'vote',
+            'data': {
+                'id': self.current_vote_id,
+                'vote': self.option1_button.text()
+            }
+        }
+        self.devs.chain.append(block)
+        for node in self.devs.nodes.copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
+
+    def vote2(self):
+        block = {
+            'type': 'vote',
+            'data': {
+                'id': self.current_vote_id,
+                'vote': self.option2_button.text()
+            }
+        }
+        self.devs.chain.append(block)
+        for node in self.devs.nodes.copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
+
+    def vote3(self):
+        block = {
+            'type': 'vote',
+            'data': {
+                'id': self.current_vote_id,
+                'vote': self.option3_button.text()
+            }
+        }
+        self.devs.chain.append(block)
+        for node in self.devs.nodes.copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
+
 
 def exception_hook(except_type, value, traceback):
     print(except_type, value, traceback)
