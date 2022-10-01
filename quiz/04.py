@@ -17,7 +17,7 @@ class Tab1(QWidget):
         self.vote_list_group_box = QGroupBox('투표 목록')
         self.vote_list = dict()
         self.vote_list_widget = QListWidget()
-        # self.vote_list_widget.clicked.connect(self.select_vote)
+        self.vote_list_widget.clicked.connect(self.select_vote)
         self.vote_list_layout = QVBoxLayout()
         self.vote_list_layout.addWidget(self.vote_list_widget)
         self.vote_list_group_box.setLayout(self.vote_list_layout)
@@ -70,6 +70,31 @@ class Tab1(QWidget):
                 self.vote_list[vote_id]['total_vote'] += 1
                 self.vote_list[vote_id]['vote_count'][block['data']['vote']] += 1
         self.update_vote()
+
+    def select_vote(self):
+        self.current_vote_id = self.vote_list_widget.currentItem().text()
+        self.update_vote()
+
+    def update_vote(self):
+        if self.current_vote_id not in self.vote_list:
+            return
+
+        self.question_label.setText(self.vote_list[self.current_vote_id]['question'])
+
+        self.option1_button.setText(self.vote_list[self.current_vote_id]['options'][0])
+        self.option1_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
+        option1_text = self.vote_list[self.current_vote_id]['options'][0]
+        self.option1_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option1_text])
+
+        self.option2_button.setText(self.vote_list[self.current_vote_id]['question'])
+        self.option2_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
+        option2_text = self.vote_list[self.current_vote_id]['options'][1]
+        self.option2_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option2_text])
+
+        self.option3_button.setText(self.vote_list[self.current_vote_id]['question'])
+        self.option3_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
+        option3_text = self.vote_list[self.current_vote_id]['options'][2]
+        self.option3_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option3_text])
 
 
 def exception_hook(except_type, value, traceback):
