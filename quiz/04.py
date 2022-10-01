@@ -174,6 +174,36 @@ class Tab2(QWidget):
 
         self.setLayout(self.form_layout)
 
+    def publish_vote(self):
+        block = {
+            'type': 'open',
+            'data': {
+                'id': str(uuid.uuid4()),
+                'question': self.question_line_edit.text(),
+                'options': [
+                    self.option1_line_edit.text(),
+                    self.option2_line_edit.text(),
+                    self.option3_line_edit.text()
+                ]
+            }
+        }
+        self.devs.chain.append(block)
+        for node in self.devs.nodes.copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.devs.tab1.update_vote_list()
+
+    def clear_vote(self):
+        self.question_line_edit.setText('')
+        self.option1_line_edit.setText('')
+        self.option2_line_edit.setText('')
+        self.option3_line_edit.setText('')
+
+
+
+
 
 def exception_hook(except_type, value, traceback):
     print(except_type, value, traceback)
