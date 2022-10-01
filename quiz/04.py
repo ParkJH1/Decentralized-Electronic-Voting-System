@@ -17,7 +17,7 @@ class Tab1(QWidget):
         self.vote_list_group_box = QGroupBox('투표 목록')
         self.vote_list = dict()
         self.vote_list_widget = QListWidget()
-        self.vote_list_widget.clicked.connect(self.select_vote)
+        # self.vote_list_widget.clicked.connect(self.select_vote)
         self.vote_list_layout = QVBoxLayout()
         self.vote_list_layout.addWidget(self.vote_list_widget)
         self.vote_list_group_box.setLayout(self.vote_list_layout)
@@ -34,3 +34,32 @@ class Tab1(QWidget):
         self.vote_layout.addWidget(self.option3_button)
         self.vote_group_box.setLayout(self.vote_layout)
 
+        self.vote_result_group_box = QGroupBox('투표 결과')
+        self.option1_progressbar = QProgressBar()
+        self.option2_progressbar = QProgressBar()
+        self.option3_progressbar = QProgressBar()
+        self.vote_result_layout = QVBoxLayout()
+        self.vote_result_layout.addWidget(self.option1_progressbar)
+        self.vote_result_layout.addWidget(self.option2_progressbar)
+        self.vote_result_layout.addWidget(self.option3_progressbar)
+        self.vote_result_group_box.setLayout(self.vote_result_layout)
+
+        self.main_layout = QGridLayout()
+        self.main_layout.addWidget(self.vote_list_group_box, 0, 0, 1, 1)
+        self.main_layout.addWidget(self.vote_group_box, 0, 1, 1, 1)
+        self.main_layout.addWidget(self.vote_result_group_box, 1, 0, 1, 2)
+
+        self.setLayout(self.main_layout)
+
+
+def exception_hook(except_type, value, traceback):
+    print(except_type, value, traceback)
+    exit(1)
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    sys.excepthook = exception_hook
+    devs = Tab1(None)
+    devs.show()
+    sys.exit(app.exec_())
