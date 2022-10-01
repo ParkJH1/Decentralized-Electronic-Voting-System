@@ -202,7 +202,38 @@ class Tab2(QWidget):
         self.option3_line_edit.setText('')
 
 
+class SocketReceiver(QThread):
+    update_vote_list_signal = pyqtSignal()
 
+    def __init__(self, devs, connection, address):
+        super().__init__()
+        self.devs = devs
+        self.connection = connection
+        self.address = address
+
+    def run(self):
+        while True:
+            try:
+                message = self.connection.recv(10000)
+            except:
+                print(f'{self.address} 연결 종료')
+                break
+            if len(message) == 0:
+                print(f'{self.address} 연결 종료')
+                break
+            print(f'{self.address} 데이터 수신: {message}')
+            data = json.loads(message)
+            if data['type'] == 'connect':
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect(('127.0.0.1', data['data']['port']))
+                block = {
+                    'type': 'list',
+                    'data': {
+                        'chain': self.devs.chain
+                    }
+                }
+                s.sendall(json.dumps(block).encode())
+                self.devs.nodes.append((s, f'127.0.0.1:{data["data"]["port"]}'))
 
 
 def exception_hook(except_type, value, traceback):
