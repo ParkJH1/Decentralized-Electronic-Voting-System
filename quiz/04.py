@@ -306,7 +306,40 @@ class DecentralizedElectronicVotingSystem(QWidget):
 
         self.setLayout(self.vbox_layout)
 
+        port = 6000
+        while True:
+            try:
+                self.listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.listen_socket.bind(('127.0.0.1', port))
+                self.listen_socket.listen(1)
+                print(f'{port}포트 연결 대기')
+                break
+            except:
+                port += 1
 
+        self.listen_thread = SocketListener(self)
+        self.listen_thread.update_vote_list_signal.connect(self.update_vote_list)
+        self.listen_thread.start()
+
+        for p in range(6000, 6005):
+            if p == port:
+                continue
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect(('127.0.0.1', p))
+                s.sendall(json.dumps({
+                    'type': 'connect',
+                    'data': {
+                        'port': port
+                    }
+                }).encode())
+                self.nodes.append((s, f'127.0.0.1:{p}'))
+            except:
+                pass
+
+    @pyqtSlot()
+    def update_vote_list(self):
+        self.tab1.update_vote_list()
 
 
 def exception_hook(except_type, value, traceback):
