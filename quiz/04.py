@@ -281,6 +281,28 @@ class SocketListener(QThread):
         self.update_vote_list_signal.emit()
 
 
+class DecentralizedElectronicVotingSystem(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.chain = []
+        self.nodes = []
+
+        self.setWindowTitle('탈중앙 전자 투표 시스템')
+
+        self.tab1 = Tab1(self)
+        self.tab2 = Tab2(self)
+
+        self.tabs = QTabWidget()
+        self.tabs.addTab(self.tab1, '투표')
+        self.tabs.addTab(self.tab2, '투표 생성')
+
+        self.vbox_layout = QVBoxLayout()
+        self.vbox_layout.addWidget(self.tabs)
+
+        self.setLayout(self.vbox_layout)
+
+
 def exception_hook(except_type, value, traceback):
     print(except_type, value, traceback)
     exit(1)
@@ -289,6 +311,6 @@ def exception_hook(except_type, value, traceback):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     sys.excepthook = exception_hook
-    devs = Tab1(None)
+    devs = DecentralizedElectronicVotingSystem()
     devs.show()
     sys.exit(app.exec_())
