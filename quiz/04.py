@@ -86,12 +86,12 @@ class Tab1(QWidget):
         option1_text = self.vote_list[self.current_vote_id]['options'][0]
         self.option1_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option1_text])
 
-        self.option2_button.setText(self.vote_list[self.current_vote_id]['question'])
+        self.option2_button.setText(self.vote_list[self.current_vote_id]['options'][1])
         self.option2_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
         option2_text = self.vote_list[self.current_vote_id]['options'][1]
         self.option2_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option2_text])
 
-        self.option3_button.setText(self.vote_list[self.current_vote_id]['question'])
+        self.option3_button.setText(self.vote_list[self.current_vote_id]['options'][2])
         self.option3_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
         option3_text = self.vote_list[self.current_vote_id]['options'][2]
         self.option3_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option3_text])
