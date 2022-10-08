@@ -25,8 +25,11 @@ class Tab1(QWidget):
         self.vote_group_box = QGroupBox('투표')
         self.question_label = QLabel(self)
         self.option1_button = QPushButton()
+        self.option1_button.clicked.connect(self.vote1)
         self.option2_button = QPushButton()
+        self.option2_button.clicked.connect(self.vote2)
         self.option3_button = QPushButton()
+        self.option3_button.clicked.connect(self.vote3)
         self.vote_layout = QVBoxLayout()
         self.vote_layout.addWidget(self.question_label)
         self.vote_layout.addWidget(self.option1_button)
@@ -194,6 +197,7 @@ class Tab2(QWidget):
             except:
                 self.devs.nodes.remove(node)
         self.devs.tab1.update_vote_list()
+        self.clear_vote()
 
     def clear_vote(self):
         self.question_line_edit.setText('')
@@ -301,6 +305,8 @@ class DecentralizedElectronicVotingSystem(QWidget):
         self.vbox_layout.addWidget(self.tabs)
 
         self.setLayout(self.vbox_layout)
+
+
 
 
 def exception_hook(except_type, value, traceback):
