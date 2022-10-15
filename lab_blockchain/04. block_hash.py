@@ -1,10 +1,5 @@
 import hashlib
 
-a = 'abcd'
-a_hash = hashlib.sha256(a.encode()).hexdigest()
-print(a_hash)
-print(len(a_hash))
-
 
 def get_block_hash(block):
     data = dict()
