@@ -164,4 +164,32 @@ class Tab1(QWidget):
 
 
 class Tab2(QWidget):
-    
+    def __init__(self, devs):
+        super().__init__()
+        self.devs = devs
+
+        self.form_layout = QFormLayout()
+
+        self.question_line_edit = QLineEdit()
+
+        self.option1_line_edit = QLineEdit()
+        self.option2_line_edit = QLineEdit()
+        self.option3_line_edit = QLineEdit()
+
+        self.publish_clear_layout = QHBoxLayout()
+
+        self.publish_button = QPushButton('게시')
+        self.publish_button.clicked.connect(self.publish_form)
+        self.clear_button = QPushButton('초기화')
+        self.clear_button.clicked.connect(self.clear_form)
+
+        self.publish_clear_layout.addWidget(self.publish_button)
+        self.publish_clear_layout.addWidget(self.clear_button)
+
+        self.form_layout.addRow('질문:', self.question_line_edit)
+        self.form_layout.addRow('선택지:', self.option1_line_edit)
+        self.form_layout.addRow('', self.option2_line_edit)
+        self.form_layout.addRow('', self.option3_line_edit)
+        self.form_layout.addRow('', self.publish_clear_layout)
+
+        self.setLayout(self.form_layout)
