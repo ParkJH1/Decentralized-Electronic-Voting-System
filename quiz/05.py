@@ -222,3 +222,20 @@ class Tab2(QWidget):
         self.option3_line_edit.setText('')
 
 
+class Tab3(QWidget):
+    def __init__(self, devs):
+        super().__init__()
+        self.devs = devs
+
+        self.modify_button = QPushButton('변조')
+        self.modify_button.clicked.connect(self.modify)
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.modify_button)
+        self.setLayout(self.layout)
+
+    def modify(self):
+        self.devs.chain[-1]['transaction']['type'] = 'open'
+        self.devs.chain[-1]['transaction']['data']['id'] = 'hack'
+        self.devs.chain[-1]['transaction']['data']['question'] = 'hack'
+        self.devs.chain[-1]['transaction']['data']['options'] = ['hack1', 'hack2', 'hack3']
+        self.devs.tab1.update_vote_list()
