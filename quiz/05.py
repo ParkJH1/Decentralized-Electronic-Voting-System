@@ -79,3 +79,29 @@ class Tab1(QWidget):
                 self.vote_list[id]['total_vote'] += 1
                 self.vote_list[id]['vote_count'][block['transaction']['data']['vote']] += 1
         self.update_vote()
+
+    def select_vote(self):
+        self.current_vote_id = self.vote_list_widget.currentItem().text()
+        self.update_vote()
+
+    def update_vote(self):
+        if self.current_vote_id not in self.vote_list:
+            return
+        self.question_label.setText(self.vote_list[self.current_vote_id]['question'])
+
+        option1 = self.vote_list[self.current_vote_id]['options'][0]
+        self.option1_button.setText(option1)
+        self.option1_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
+        self.option1_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option1])
+
+        option2 = self.vote_list[self.current_vote_id]['options'][1]
+        self.option2_button.setText(option2)
+        self.option2_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
+        self.option2_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option2])
+
+        option3 = self.vote_list[self.current_vote_id]['options'][2]
+        self.option3_button.setText(option3)
+        self.option3_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
+        self.option3_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option3])
+
+    
