@@ -213,4 +213,12 @@ class Tab2(QWidget):
             except:
                 self.devs.nodes.remove(node)
         self.devs.tab1.update_vote_list()
-        
+        self.clear_form()
+
+    def clear_form(self):
+        self.question_line_edit.setText('')
+        self.option1_line_edit.setText('')
+        self.option2_line_edit.setText('')
+        self.option3_line_edit.setText('')
+
+
