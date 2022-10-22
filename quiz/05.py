@@ -43,4 +43,22 @@ class Tab1(QWidget):
         self.vote_layout.addWidget(self.option3_button)
         self.vote_group_box.setLayout(self.vote_layout)
 
-        
+        self.vote_result_group_box = QGroupBox('투표 결과')
+        self.option1_progressbar = QProgressBar()
+        self.option2_progressbar = QProgressBar()
+        self.option3_progressbar = QProgressBar()
+        self.vote_result_layout = QVBoxLayout()
+        self.vote_result_layout.addWidget(self.option1_progressbar)
+        self.vote_result_layout.addWidget(self.option2_progressbar)
+        self.vote_result_layout.addWidget(self.option3_progressbar)
+        self.vote_result_group_box.setLayout(self.vote_result_layout)
+
+        self.main_layout = QGridLayout()
+        self.main_layout.addWidget(self.vote_list_group_box, 0, 0, 1, 1)
+        self.main_layout.addWidget(self.vote_group_box, 0, 1, 1, 1)
+        self.main_layout.addWidget(self.vote_result_group_box, 1, 0, 1, 2)
+
+        self.setLayout(self.main_layout)
+
+        self.update_vote_list()
+    
