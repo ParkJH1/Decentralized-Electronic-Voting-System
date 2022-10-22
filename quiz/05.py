@@ -28,4 +28,19 @@ class Tab1(QWidget):
         self.vote_list_layout.addWidget(self.vote_list_widget)
         self.vote_list_group_box.setLayout(self.vote_list_layout)
 
+        self.vote_group_box = QGroupBox('투표')
+        self.question_label = QLabel(self)
+        self.option1_button = QPushButton()
+        self.option2_button = QPushButton()
+        self.option3_button = QPushButton()
+        self.option1_button.clicked.connect(self.vote1)
+        self.option2_button.clicked.connect(self.vote2)
+        self.option3_button.clicked.connect(self.vote3)
+        self.vote_layout = QVBoxLayout()
+        self.vote_layout.addWidget(self.question_label)
+        self.vote_layout.addWidget(self.option1_button)
+        self.vote_layout.addWidget(self.option2_button)
+        self.vote_layout.addWidget(self.option3_button)
+        self.vote_group_box.setLayout(self.vote_layout)
+
         
