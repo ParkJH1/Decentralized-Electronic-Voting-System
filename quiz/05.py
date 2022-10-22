@@ -17,6 +17,7 @@ def get_block_hash(block):
 
 class Tab1(QWidget):
     def __init__(self, devs):
+        super().__init__()
         self.devs = devs
         self.current_vote_id = -1
 
@@ -160,3 +161,7 @@ class Tab1(QWidget):
             except:
                 self.devs.nodes.remove(node)
         self.update_vote_list()
+
+
+class Tab2(QWidget):
+    
