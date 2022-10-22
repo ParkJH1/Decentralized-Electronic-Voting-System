@@ -104,4 +104,59 @@ class Tab1(QWidget):
         self.option3_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
         self.option3_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option3])
 
-    
+    def vote1(self):
+        block = {
+            'transaction': {
+                'type': 'vote',
+                'data': {
+                    'id': self.current_vote_id,
+                    'vote': self.option1_button.text()
+                }
+            }
+        }
+        block['hash'] = get_block_hash(block)
+        self.devs.chain.append(block)
+        for node in self.devs.nodes().copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
+
+    def vote2(self):
+        block = {
+            'transaction': {
+                'type': 'vote',
+                'data': {
+                    'id': self.current_vote_id,
+                    'vote': self.option2_button.text()
+                }
+            }
+        }
+        block['hash'] = get_block_hash(block)
+        self.devs.chain.append(block)
+        for node in self.devs.nodes().copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
+
+    def vote3(self):
+        block = {
+            'transaction': {
+                'type': 'vote',
+                'data': {
+                    'id': self.current_vote_id,
+                    'vote': self.option3_button.text()
+                }
+            }
+        }
+        block['hash'] = get_block_hash(block)
+        self.devs.chain.append(block)
+        for node in self.devs.nodes().copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
