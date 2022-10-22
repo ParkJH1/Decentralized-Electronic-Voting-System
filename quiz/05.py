@@ -61,4 +61,21 @@ class Tab1(QWidget):
         self.setLayout(self.main_layout)
 
         self.update_vote_list()
-    
+
+    def update_vote_list(self):
+        self.vote_list.clear()
+        self.vote_list_widget.clear()
+        for block in self.devs.chain:
+            if block['transaction']['type'] == 'open':
+                id = block['transaction']['data']['id']
+                self.vote_list_widget.addItem(id)
+                self.vote_list[id] = block['transaction']['data'].copy()
+                self.vote_list[id]['total_vote'] = 0
+                self.vote_lost[id]['vote_count'] = dict()
+                for option in block['transaction']['data']['options']:
+                    self.vote_list[id]['vote_count'][option] = 0
+            elif block['transaction']['type'] == 'vote':
+                id = block['transaction']['data']['id']
+                self.vote_list[id]['total_vote'] += 1
+                self.vote_list[id]['vote_count'][block['transaction']['data']['vote']] += 1
+        self.update_vote()
