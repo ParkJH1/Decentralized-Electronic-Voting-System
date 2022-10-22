@@ -294,4 +294,97 @@ class SocketReceiver(QThread):
                 self.update_vote_list_signal.emit()
 
 
+class SocketListener(QThread):
+    update_vote_list_signal = pyqtSignal()
 
+    def __init__(self, devs):
+        super().__init__()
+        self.devs = devs
+
+    def run(self):
+        while True:
+            connection, address = self.devs.listen_socket.accept()
+            self.devs.nodes.append((connection, address))
+            print(f'연결 됨: {address}')
+            self.receive_thread = SocketReceiver(self.devs, connection, address)
+            self.receive_thread.update_vote_list_signal.connect(self.update_vote_list)
+            self.receive_thread.start()
+
+    @pyqtSlot()
+    def update_vote_list(self):
+        self.update_vote_list_signal.emit()
+
+
+class DecentralizedElectronicVotingSystem(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.chain = []
+        self.nodes = []
+
+        self.setWindowTitle('탈중앙 블록체인 투표 시스템')
+
+        self.tab1 = Tab1(self)
+        self.tab2 = Tab2(self)
+        self.tab3 = Tab3(self)
+
+        self.tabs = QTabWidget()
+        self.tabs.addTab(self.tab1, '투표')
+        self.tabs.addTab(self.tab2, '투표 생성')
+        self.tabs.addTab(self.tab3, 'hack')
+
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.tabs)
+
+        self.setLayout(self.layout)
+
+        self.port = 6000
+        while True:
+            try:
+                self.listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.listen_socket.bind(('127.0.0.1', self.port))
+                self.listen_socket.listen(1)
+                print(f'{self.port}포트 연결 대기')
+                break
+            except:
+                self.port += 1
+
+        self.listen_thread = SocketListener(self)
+        self.listen_thread.update_vote_list_signal.connect(self.update_vote_list)
+        self.listen_thread.start()
+
+        for p in range(6000, 6005):
+            if p == self.port:
+                continue
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect(('127.0.0.1', p))
+                block = {
+                    'transaction': {
+                        'type': 'connect',
+                        'data': {
+                            'port': self.port
+                        }
+                    }
+                }
+                s.sendall(json.dumps(block).encode())
+                self.nodes.append((s, f'127.0.0.1:{p}'))
+            except:
+                pass
+
+    @pyqtSlot()
+    def update_vote_list(self):
+        self.tab1.update_vote_list()
+
+
+def exception_hook(except_type, value, traceback):
+    print(except_type, value, traceback)
+    exit(1)
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    sys.excepthook = exception_hook
+    devs = DecentralizedElectronicVotingSystem()
+    devs.show()
+    sys.exit(app.exec_())
