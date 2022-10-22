@@ -275,4 +275,23 @@ class SocketReceiver(QThread):
                 }
                 s.sendall(json.dumps(block).encode())
                 self.devs.nodes.append((s, f'127.0.0.1:{data["transaction"]["data"]["port"]}'))
-            
+            elif data['transaction']['type'] == 'list':
+                valid_chain = True
+                for block in data['transaction']['data']['chain']:
+                    block_hash = get_block_hash(block)
+                    if block_hash != block['hash']:
+                        print('변조 감지')
+                        valid_chain = False
+                        break
+                if valid_chain:
+                    self.devs.chain = data['transaction']['data']['chain']
+                self.update_vote_list_signal.emit()
+            elif data['transaction']['type'] == 'open':
+                self.devs.chain.append(data)
+                self.update_vote_list_signal.emit()
+            elif data['transaction']['type'] == 'vote':
+                self.devs.chain.append(data)
+                self.update_vote_list_signal.emit()
+
+
+
