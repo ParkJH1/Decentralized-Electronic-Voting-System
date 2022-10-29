@@ -18,3 +18,17 @@ f = open('../wallets/wallet.pem', 'wb')
 f.write(new_private_key.to_pem())
 f.close()
 
+#############################################
+
+f = open('../wallets/wallet.pem', 'rb')
+pem = f.read()
+f.close()
+
+load_private_key = SigningKey.from_pem(pem)
+load_public_key = load_private_key.get_verifying_key()
+load_wallet_address = hashlib.sha256(load_public_key.to_string()).hexdigest()
+
+print(load_private_key.to_string())
+print(load_private_key.to_pem())
+print(load_public_key.to_string())
+print(load_wallet_address)
