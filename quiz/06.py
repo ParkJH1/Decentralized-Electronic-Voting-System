@@ -76,23 +76,40 @@ class Tab1(QWidget):
         self.current_vote_id = -1
 
         self.wallet_group_box = QGroupBox('지갑')
-
         self.wallet_info_label = QLabel()
         self.wallet_info_label.setText('')
         self.wallet_generate_button = QPushButton('지갑 생성')
         self.wallet_generate_button.clicked.connect(self.generate_wallet)
         self.wallet_select_button = QPushButton('지각 선택')
         self.wallet_select_button.clicked.connect(self.select_wallet)
-
         self.wallet_layout = QHBoxLayout()
         self.wallet_layout.addWidget(self.wallet_info_label)
         self.wallet_layout.addWidget(self.wallet_generate_button)
         self.wallet_layout.addWidget(self.wallet_select_button)
-
         self.wallet_group_box.setLayout(self.wallet_layout)
 
+        self.vote_list_group_box = QGroupBox('투표 목록')
+        self.vote_list = dict()
+        self.vote_list_widget = QListWidget()
+        self.vote_list_widget.clicked.connect(self.select_vote)
+        self.vote_list_layout = QVBoxLayout()
+        self.vote_list_layout.addWidget(self.vote_list_widget)
+        self.vote_list_group_box.setLayout(self.vote_list_layout)
 
-
+        self.vote_group_box = QGroupBox('투표')
+        self.question_label = QLabel()
+        self.option1_button = QPushButton()
+        self.option2_button = QPushButton()
+        self.option3_button = QPushButton()
+        self.option1_button.clicked.connect(self.vote1)
+        self.option2_button.clicked.connect(self.vote2)
+        self.option3_button.clicked.connect(self.vote3)
+        self.vote_layout = QVBoxLayout()
+        self.vote_layout.addWidget(self.question_label)
+        self.vote_layout.addWidget(self.option1_button)
+        self.vote_layout.addWidget(self.option2_button)
+        self.vote_layout.addWidget(self.option3_button)
+        self.vote_group_box.setLayout(self.vote_layout)
 
 
 
