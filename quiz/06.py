@@ -200,7 +200,72 @@ class Tab1(QWidget):
         self.option3_button.setText(option3)
         self.option3_progressbar.setRange(0, self.vote_list[self.current_vote_id]['total_vote'])
         self.option3_progressbar.setValue(self.vote_list[self.current_vote_id]['vote_count'][option3])
-    
+
+    def vote1(self):
+        block = {
+            'transaction': {
+                'type': 'vote',
+                'data': {
+                    'id': self.current_vote_id,
+                    'vote': self.option1_button.text()
+                }
+            },
+            'author': self.devs.public_key.to_pem().decode(),
+            'previous_hash': self.devs.chain[-1]['hash']
+        }
+        block['hash'] = get_block_hash(block)
+        block['signature'] = get_block_signature(block, self.devs.private_key)
+        self.devs.chain.append(block)
+        for node in self.devs.nodes.copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
+
+    def vote2(self):
+        block = {
+            'transaction': {
+                'type': 'vote',
+                'data': {
+                    'id': self.current_vote_id,
+                    'vote': self.option2_button.text()
+                }
+            },
+            'author': self.devs.public_key.to_pem().decode(),
+            'previous_hash': self.devs.chain[-1]['hash']
+        }
+        block['hash'] = get_block_hash(block)
+        block['signature'] = get_block_signature(block, self.devs.private_key)
+        self.devs.chain.append(block)
+        for node in self.nodes.copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
+
+    def vote3(self):
+        block = {
+            'transaction': {
+                'type': 'vote',
+                'data': {
+                    'id': self.current_vote_id,
+                    'vote': self.option3_button.text()
+                }
+            },
+            'author': self.devs.public_key.to_pem().decode(),
+            'previous_hash': self.devs.chain[-1]['hash']
+        }
+        block['hash'] = get_block_hash(block)
+        block['signature'] = get_block_signature(block, self.devs.private_key)
+        self.devs.chain.append(block)
+        for node in self.nodes.copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.update_vote_list()
 
 
 
