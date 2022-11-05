@@ -67,3 +67,35 @@ def verity_block_chain(chain):
             return False
     return True
 
+
+class Tab1(QWidget):
+    def __init__(self, devs):
+        super().__init__()
+
+        self.devs = devs
+        self.current_vote_id = -1
+
+        self.wallet_group_box = QGroupBox('지갑')
+
+        self.wallet_info_label = QLabel()
+        self.wallet_info_label.setText('')
+        self.wallet_generate_button = QPushButton('지갑 생성')
+        self.wallet_generate_button.clicked.connect(self.generate_wallet)
+        self.wallet_select_button = QPushButton('지각 선택')
+        self.wallet_select_button.clicked.connect(self.select_wallet)
+
+        self.wallet_layout = QHBoxLayout()
+        self.wallet_layout.addWidget(self.wallet_info_label)
+        self.wallet_layout.addWidget(self.wallet_generate_button)
+        self.wallet_layout.addWidget(self.wallet_select_button)
+
+        self.wallet_group_box.setLayout(self.wallet_layout)
+
+
+
+
+
+
+
+
+
