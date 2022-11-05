@@ -54,3 +54,16 @@ def verify_block_signature(block):
         return False
     return True
 
+
+def verity_block_chain(chain):
+    if (not verify_block_hash(chain[0])) or chain[0]['transaction']['type'] != 'genesis':
+        return False
+    for i in range(1, len(chain)):
+        if not verify_block_hash(chain[i]):
+            return False
+        if not verify_block_signature(chain[i]):
+            return False
+        if chain[i]['previous_hash'] != chain[i - 1]['hash']:
+            return False
+    return True
+
