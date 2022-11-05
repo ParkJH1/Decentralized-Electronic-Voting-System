@@ -33,4 +33,24 @@ def get_block_signature(block, key):
     return base64.b64encode(signature).decode()
 
 
+def verify_block_hash(block):
+    block_hash = get_block_hash(block)
+    if block_hash != block['hash']:
+        return False
+    return True
+
+
+def verify_block_signature(block):
+    key = VerifyingKey.from_pem(block['author'].encode())
+    data = dict()
+    data['type'] = block['transaction']['type']
+    data['data'] = sorted(block['transaction']['data'].copy().items())
+    data['author'] = block['author']
+    data['previous_hash'] = block['previous_hash']
+    data = sorted(data.items())
+    try:
+        key.verify(base64.b64decode(block['signature'].encode()), str(data).encode())
+    except:
+        return False
+    return True
 
