@@ -132,5 +132,30 @@ class Tab1(QWidget):
         self.update_wallet_info()
         self.update_vote_list()
 
+    def generate_wallet(self):
+        self.devs.private_key = SigningKey.generate()
+        self.devs.public_key = self.devs.private_key.get_verifying_key()
+        self.devs.wallet_address = hashlib.sha256(self.devs.public_key.to_string()).hexdigest()
+        if not os.path.exists('../wallets'):
+            os.mkdir('../wallets')
+        f = open(f'../wallets/{self.devs.wallet_address}.pem', 'wb')
+        f.write(self.devs.private_key.to_pem())
+        f.close()
+        self.update_wallet_info()
+
+    def select_wallet(self):
+        path, _ = QFileDialog.getOpenFileName(self, '지갑 선택', '../wallets', 'PEM Files (*.pem)')
+        if path == '':
+            return
+        f = open(path, 'rb')
+        pem = f.read()
+        f.close()
+        self.devs.private_key = SigningKey.from_pem(pem)
+        self.devs.public_key = self.devs.private_key.get_verifying_key()
+        self.devs.wallet_address = hashlib.sha256(self.devs.public_key.to_string()).hexdigest()
+        self.update_wallet_info()
+
+    
+
 
 
