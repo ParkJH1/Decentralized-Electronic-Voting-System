@@ -295,10 +295,41 @@ class Tab2(QWidget):
         self.form_layout.addRow('', self.option2_line_edit)
         self.form_layout.addRow('', self.option3_line_edit)
         self.form_layout.addRow('', self.publish_clear_layout)
-        
+
         self.setLayout(self.form_layout)
 
+    def publish_form(self):
+        block = {
+            'transaction': {
+                'type': 'open',
+                'data': {
+                    'id': str(uuid.uuid4()),
+                    'question': self.question_line_edit.text(),
+                    'options': [
+                        self.option1_line_edit.text(),
+                        self.option2_line_edit.text(),
+                        self.option3_line_edit.text()
+                    ]
+                }
+            },
+            'author': self.devs.public_key.to_pem().decode(),
+            'previous_hash': self.devs.chain[-1]['hash']
+        }
+        block['hash'] = get_block_hash(block)
+        block['signature'] = get_block_signature(block, self.devs.private_key)
+        self.devs.chain.append(block)
+        for node in self.devs.node.copy():
+            try:
+                node[0].sendall(json.dumps(block).encode())
+            except:
+                self.devs.nodes.remove(node)
+        self.devs.tab1.update_vote_list()
 
+    def clear_form(self):
+        self.question_line_edit.setText('')
+        self.option1_line_edit.setText('')
+        self.option2_line_edit.setText('')
+        self.option3_line_edit.setText('')
 
 
 
