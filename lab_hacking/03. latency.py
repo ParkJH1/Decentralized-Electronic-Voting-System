@@ -99,7 +99,7 @@ server2_thread = threading.Thread(target=server2_listener)
 server2_thread.daemon = True
 server2_thread.start()
 
-time.sleep(5)
+time.sleep(10)
 
 client1_thread = threading.Thread(target=client1)
 client1_thread.daemon = True
