@@ -55,6 +55,8 @@ def client1():
     send_socket2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     send_socket2.connect(('127.0.0.1', 6001))
 
+    print('클라이언트1 연결')
+
     global command
     while True:
         if command == 1:
